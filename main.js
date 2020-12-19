@@ -98,14 +98,16 @@ maxFlowGraph.addNode(g);
 maxFlowGraph.addNode(h);
 
 maxFlowGraph.connectNodes(a, b, 8); 
-maxFlowGraph.connectNodes(a, f, 4); 
+maxFlowGraph.connectNodes(a, f, 5); 
 maxFlowGraph.connectNodes(b, c, 5); 
-maxFlowGraph.connectNodes(b, g, 3); 
-maxFlowGraph.connectNodes(c, d, 5); 
-maxFlowGraph.connectNodes(e, d, 4); 
+maxFlowGraph.connectNodes(b, g, 4); 
+maxFlowGraph.connectNodes(c, d, 6); 
+maxFlowGraph.connectNodes(e, d, 6); 
 maxFlowGraph.connectNodes(f, e, 4);
 maxFlowGraph.connectNodes(g, h, 2); 
-maxFlowGraph.connectNodes(g, e, 1); 
+maxFlowGraph.connectNodes(g, e, 2); 
+maxFlowGraph.connectNodes(g, f, 3);
 maxFlowGraph.connectNodes(h, d, 2);
 
 let res = maxFlow(maxFlowGraph, a, d);
+console.log(res)

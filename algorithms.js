@@ -344,6 +344,62 @@ function findPath(graph, start, end) {
 	return path;
 }
 
+/*
+ * Returns the Connection of lowest weight value in a series of Connections (path)
+ * 
+ * @param 	{Graph}		graph 			Graph
+ * @param 	{Array}		path 			Array of Connections
+ * @param 	{Array}		connectionW 	Array of updated Connection weights
+ * @return 	{Connection}	The lowest weight Connection 	 
+*/
+function getLowestPipe(graph, path, connectionW) {
+	let lowest = 1e6; 
+	let lowestConnection = null; 
+
+	for (let p of path) {
+		const pIndex = graph.connections.indexOf(p); 
+		const value = connectionW[pIndex]; 
+		if (value <= lowest) {
+			lowestConnection = p; 
+			lowest = value; 
+		}
+	}
+	return lowestConnection
+}
+
+/*
+ * Get the maxium flow network 
+ * This algorithm uses the Connection weight as the capacity of the edge 
+ * 
+ * @param	{Graph}		graph 		Graph
+ * @param 	{Node}		start 		Starting point
+ * @param 	{Node}		end 		End poiny 
+ * @return 	{Array}			Array containing Connections with weights changed  
+*/
 function maxFlow(graph, start, end) {
-	console.log(findPath(graph, start, end));
+	const allPaths = findPath(graph, start, end);
+	let connectionWeight = graph.connections.map(c => c.weight);
+	let sum = 0;
+	
+	for (let path of allPaths) {
+		const lowestCon = getLowestPipe(graph, path, connectionWeight);
+		const lowestConIndex = graph.connections.indexOf(lowestCon); 
+		const lowest = connectionWeight[lowestConIndex]; 
+		for (let conn of path) {
+			const cIndex = graph.connections.indexOf(conn); 
+			connectionWeight[cIndex] -= lowest; 
+		}
+		sum += lowest;
+	}
+	
+	let max = []; 
+	for (let i=0; i < connectionWeight.length; i++) {
+		const originalC = graph.connections[i]
+		if (originalC.weight === connectionWeight[i]) continue;
+		
+		const c = new Connection(originalC.node_1, originalC.node_2, originalC.weight-connectionWeight[i]);
+		max.push(c);
+	}
+
+	return max;
 }
