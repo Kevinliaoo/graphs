@@ -71,7 +71,41 @@ binTree.addNode(A, C, 1);
 binTree.addNode(C, F, 0); 
 binTree.addNode(C, G, 1);
 
-console.log(calculateTreeHeight(binTree, binTree.rootNode))
-console.log(preOrder(binTree, binTree.rootNode))
-console.log(inOrder(binTree, binTree.rootNode))
-console.log(posOrder(binTree, binTree.rootNode))
+let eulerGraph = new Graph(a);
+eulerGraph.addNode(b);
+eulerGraph.addNode(c);
+eulerGraph.addNode(d);
+eulerGraph.addNode(e);
+eulerGraph.addNode(f);
+
+eulerGraph.connectNodes(a, b, 10); 
+eulerGraph.connectNodes(a, c, 10); 
+eulerGraph.connectNodes(a, f, 10); 
+eulerGraph.connectNodes(a, e, 10);
+eulerGraph.connectNodes(f, c, 10); 
+eulerGraph.connectNodes(f, e, 10);
+eulerGraph.connectNodes(f, d, 10)
+eulerGraph.connectNodes(b, c, 10);
+eulerGraph.connectNodes(c, d, 10);
+
+let maxFlowGraph = new Graph(a); 
+maxFlowGraph.addNode(b);
+maxFlowGraph.addNode(c);
+maxFlowGraph.addNode(d);
+maxFlowGraph.addNode(e);
+maxFlowGraph.addNode(f);
+maxFlowGraph.addNode(g);
+maxFlowGraph.addNode(h);
+
+maxFlowGraph.connectNodes(a, b, 8); 
+maxFlowGraph.connectNodes(a, f, 4); 
+maxFlowGraph.connectNodes(b, c, 5); 
+maxFlowGraph.connectNodes(b, g, 3); 
+maxFlowGraph.connectNodes(c, d, 5); 
+maxFlowGraph.connectNodes(e, d, 4); 
+maxFlowGraph.connectNodes(f, e, 4);
+maxFlowGraph.connectNodes(g, h, 2); 
+maxFlowGraph.connectNodes(g, e, 1); 
+maxFlowGraph.connectNodes(h, d, 2);
+
+let res = maxFlow(maxFlowGraph, a, d);

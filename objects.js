@@ -96,6 +96,8 @@ class Graph {
 			let connections = this.connections.filter((c) => (c.node_1 === node || c.node_2 === node))
 			this.nodesDegree.push(connections.length); 
 		}
+
+		return this.nodesDegree;
 	}
 
 	/**

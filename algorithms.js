@@ -298,3 +298,52 @@ function dijkstra(graph, start, end) {
 	return path.reverse() 
 }
 
+function findClosedPath(graph, start, end) {
+	let connections = getAllConnections(graph, start); 
+	console.log(connections);
+}
+
+function fleury(graph) {
+	let degrees = graph.getNodesDegree(); 
+	// Check for Euler cicle condition: All degree must have pair values
+	const reducer = (acum, value) => acum + value; 
+	let isDegreePair = degrees.map(n => n % 2 != 0).reduce(reducer, 0); 
+	if (isDegreePair > 1) {
+		console.log("Error!");
+		return;
+	}
+
+	findClosedPath(graph, graph.rootNode, graph.rootNode);
+}
+
+/*
+ * Find all paths from a start point to an end point in a Graph
+ * 
+ * @param 	{Graph} 	graph 		Graph
+ * @param 	{Node}		start 		Starting point 
+ * @param 	{Node}		end 		End point
+ * @return 	{Array}					Array containing arrays of connections, each one representing a possible path
+*/
+function findPath(graph, start, end) {
+	let allConnections = graph.connections.filter(c => c.node_1 === start); 
+	let path = [];	// All possible paths  
+
+	for (let c of allConnections) {
+		// Got to final point 
+		if (c.node_2 === end) path.push([c]);
+		else { 
+			let subpaths = findPath(graph, c.node_2, end); 
+			let fixedSubpaths = subpaths.map(n => {
+				n.unshift(c);
+				return n; 
+			});
+			// Add new path to path array 
+			path = path.concat(fixedSubpaths)
+		}
+	}
+	return path;
+}
+
+function maxFlow(graph, start, end) {
+	console.log(findPath(graph, start, end));
+}
