@@ -88,6 +88,8 @@ eulerGraph.connectNodes(f, d, 10)
 eulerGraph.connectNodes(b, c, 10);
 eulerGraph.connectNodes(c, d, 10);
 
+console.log(fleury(eulerGraph));
+
 let maxFlowGraph = new Graph(a); 
 maxFlowGraph.addNode(b);
 maxFlowGraph.addNode(c);
@@ -108,6 +110,3 @@ maxFlowGraph.connectNodes(g, h, 2);
 maxFlowGraph.connectNodes(g, e, 2); 
 maxFlowGraph.connectNodes(g, f, 3);
 maxFlowGraph.connectNodes(h, d, 2);
-
-let res = maxFlow(maxFlowGraph, a, d);
-console.log(res)

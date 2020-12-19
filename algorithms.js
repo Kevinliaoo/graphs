@@ -298,9 +298,69 @@ function dijkstra(graph, start, end) {
 	return path.reverse() 
 }
 
-function findClosedPath(graph, start, end) {
-	let connections = getAllConnections(graph, start); 
-	console.log(connections);
+/*
+ * Check if a cycle (array) is repeated in an array of cycles 
+ * 
+ * @param	{Array} 	cicles 		Array of cycles 
+ * @param 	{Array}		c 			Single cycle 
+ * @return 	{Boolean}		true if is repeated and false if not 
+*/
+function checkRepeated(cicles, c) {
+	if (cicles.length === 0) return false; 
+	for (let cicle of cicles) {
+		let counter = 0; 
+		for (let cx of c) {
+			if (cicle.includes(cx)) counter++; 
+		}
+		if (counter === c.length) return true
+	}
+	return false;
+}
+
+/*
+ * Check wether two nodes are connected in a Graph 
+ * 
+ * @param 	{Graph} 	graph 		Graph 
+ * @param 	{Node}		n1 			Node 1
+ * @param 	{Node}		n2   		Node 2
+ * @return 	{Connection}	Connection that links two nodes
+*/
+function areNodesLinked(graph, n1, n2) {
+	for (let con of graph.connections) {
+		if (con.node_1 === n1 && con.node_2 === n2) return con; 
+		if (con.node_1 === n2 && con.node_2 === n1) return con;
+	}
+	return false;
+}
+
+/*
+ * Get all 3 Connections cycles 
+ * BUGS: 
+ *    - Falta buscar ciclos más largos 
+ * 
+ * @param 	{Graph} 	graph 	graph
+ * @param 	{Node}		point 	Starting and ending point of cycle 
+ * @return 	{Array}		Array of arrays containing Connections (cycles) 
+*/
+function findClosedPath(graph, point) {
+	let allConnections = graph.connections.filter(c => (c.node_1 === point || c.node_2 === point));
+	let cicles = []; 
+
+	for (let c1 of allConnections) {
+		const otherSide1 = c1.node_1 === point ? c1.node_2 : c1.node_1;
+
+		for (let c2 of allConnections) {
+			if (c1 === c2) continue;
+			const otherSide2 = c2.node_1 === point ? c2.node_2 : c2.node_1;
+			const connection = areNodesLinked(graph, otherSide1, otherSide2);
+			if (connection === false) continue; 
+			else {
+				const cicle = [c1, connection, c2];
+				if (checkRepeated(cicles, cicle) === false) cicles.push(cicle);
+			} 
+		}
+	}
+	return cicles;
 }
 
 function fleury(graph) {
@@ -308,12 +368,62 @@ function fleury(graph) {
 	// Check for Euler cicle condition: All degree must have pair values
 	const reducer = (acum, value) => acum + value; 
 	let isDegreePair = degrees.map(n => n % 2 != 0).reduce(reducer, 0); 
-	if (isDegreePair > 1) {
-		console.log("Error!");
-		return;
+	if (isDegreePair > 1) return;
+
+	let euler = [];
+	let nodesIndex = 0; 
+	let currentNode = graph.nodes[nodesIndex]; 
+	let nodes = [currentNode];
+	// Add the first cycle 
+	findClosedPath(graph, currentNode)[0].map(x => {
+		updateNodes(x); 
+		euler.push(x);
+	}); 
+
+	while (euler.length != graph.connections.length) {
+		nodesIndex++; 
+		currentNode = nodes[nodesIndex];
+		let cycles = findClosedPath(graph, currentNode);
+		let selectedCycle = null;
+
+		// Select a cycle that is appropiate 
+		for (let cicle of cycles) {
+			// Checkear si ya se paso por la conexión 
+			const passed = cicle.filter(c => euler.includes(c)).length != 0;
+			if (passed === false) {
+				selectedCycle = cicle; 
+				break;
+			}
+		} 
+
+		// No cycles were selected, go on with next Node 
+		if (selectedCycle === null) continue;
+
+		selectedCycle.map(updateNodes); 
+		const insertIndex = getIndex()+1
+		euler.splice(insertIndex, 0, ...selectedCycle)
 	}
 
-	findClosedPath(graph, graph.rootNode, graph.rootNode);
+	function updateNodes(x) {
+		if (x.node_1 === currentNode) {
+			if (!nodes.includes(x.node_2)) nodes.push(x.node_2);
+		}
+		if (x.node_2 === currentNode) {
+			if (!nodes.includes(x.node_1)) nodes.push(x.node_1); 
+		}
+		if (x.node_1 != currentNode && x.node_2 != currentNode) {
+			if (!nodes.includes(x.node_2)) nodes.push(x.node_2);
+			if (!nodes.includes(x.node_1)) nodes.push(x.node_1); 
+		}
+	}
+
+	function getIndex() {
+		for (let c of euler) {
+			if (c.node_1 === currentNode || c.node_2 === currentNode) return euler.indexOf(c);
+		}
+	}
+
+	return euler;
 }
 
 /*
