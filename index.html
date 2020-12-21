@@ -1,25 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="./styles.css">
+	<link rel="stylesheet" type="text/css" href="./css/styles.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
 	<title>Grafos</title>
 </head>
 <body>
 
-	<header class="header">Graphs and Trees</header>
+	<header class="header">
+		<ul class="algorithm-menu">
+			<li class="menu-item">Prim</li>
+			<li class="menu-item">Dijkstra</li>
+			<li class="menu-item">Fleury</li>
+			<li class="menu-item">Max flow</li>
+		</ul>
+	</header>
 
 	<section class="container">
-		<div class="navbar">
-			<button class="navbar__algobtn">Algortimo</button>
-			<p class="navbar__nodetext">Node: </p>
-			<input class="navbar__nodeinput" type="text" name="insertNode" placeholder="Node name: ">
-			<button class="navbar__nodeinsert">Insert node</button>
-		</div>
-		<p class="main">Content</p>
+		<section class="nav-menu">
+			<button class="nav-menu__algobtn">Select algorithm</button>
+			<p class="nav-menu__node">Nodes</p>
+			<input class="nav-menu__nodename" type="text" name="nodename" placeholder="Node name: ">
+			<button class="nav-menu__addnodebtn">Add</button>
+
+			<p class="nav-menu__connection">Connections</p>
+			<input class="nav-menu__nodeweight" type="number" name="weight" placeholder="Node weight">
+			<input class="nav-menu__connections--edges" type="text" name="from" placeholder="From: ">
+			<img class="nav-menu__arrow-img" src="./assets/arrow.png" alt="arrow">
+			<input class="nav-menu__connections--edges" type="text" name="to" placeholder="To: ">
+			<button class="nav-menu__connectbtn">Connect</button>
+		</section>
+		<section class="content">
+			<canvas class="visualizer"></canvas>
+		</section>
 	</section>
 
-	<script type="text/javascript" src='objects.js'></script>
-	<script type="text/javascript" src='algorithms.js'></script>
-	<script type="text/javascript" src='main.js'></script>
+	<script type="text/javascript" src='./js/objects.js'></script>
+	<script type="text/javascript" src='./js/algorithms.js'></script>
+	<script type="text/javascript" src='./js/main.js'></script>
 </body>
 </html>
