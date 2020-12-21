@@ -363,6 +363,16 @@ function findClosedPath(graph, point) {
 	return cicles;
 }
 
+function findClosedPathh(graph, point) {
+	let allConnections = graph.connections.filter(c => (c.node_1 === point || c.node_2 === point)); 
+	let path = [];	
+
+	for (let c of allConnections) {
+		
+	}
+
+}
+
 function fleury(graph) {
 	let degrees = graph.getNodesDegree(); 
 	// Check for Euler cicle condition: All degree must have pair values
@@ -404,6 +414,11 @@ function fleury(graph) {
 		euler.splice(insertIndex, 0, ...selectedCycle)
 	}
 
+	/*
+	 * Update nodes list 
+	 * 
+	 * @param 	{Connection}	x	Connection
+	*/
 	function updateNodes(x) {
 		if (x.node_1 === currentNode) {
 			if (!nodes.includes(x.node_2)) nodes.push(x.node_2);
@@ -417,6 +432,11 @@ function fleury(graph) {
 		}
 	}
 
+	/*
+	 * Get the index to insert new cycle in euler array 
+	 * 
+	 * @return 		{Number}	Index value 
+	*/
 	function getIndex() {
 		for (let c of euler) {
 			if (c.node_1 === currentNode || c.node_2 === currentNode) return euler.indexOf(c);
