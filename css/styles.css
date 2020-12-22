@@ -21,7 +21,7 @@ body {
 }
 
 .menu-item {
-	background-color: #AFF54E;
+	background-color: rgb(57, 255, 20);
 	padding: 5px;
 	margin-top: 5px;
 	border: 2px solid black;
@@ -36,7 +36,7 @@ body {
 }
 
 .menu-item:hover {
-    flex: 3; 
+    background-color: rgba(57, 255, 20, 0.7) 
 }
 
 .container {
@@ -57,16 +57,19 @@ body {
 .nav-menu__algobtn{
 	margin: 25px 8px;
 	padding: 5px;
-	border: none;
 	border-radius: 25px; 
 	height: 50px;
-	background-color: salmon;
+	background-color: #ED2939;
 	font-size: 16px; 
 	letter-spacing: 1px;
 	font-weight: bold;
 	color: black;
 	cursor: pointer;
 	outline:none; 
+}
+
+.nav-menu__algobtn:hover {
+	background-color: rgba(237, 41, 57, 0.7);
 }
 
 .nav-menu__node, .nav-menu__connection {
@@ -90,13 +93,17 @@ body {
 	border-radius: 25px;
 	outline: none;
     cursor: pointer; 
-    background-color: rgba(4, 228, 116, 0.5);
+    background-color: rgba(4, 228, 116, 1);
+}
+
+.nav-menu__addnodebtn:hover, .nav-menu__connectbtn:hover {
+	background-color: rgba(4, 228, 116, 0.7);
 }
 
 .nav-menu__arrow-img {
 	width: 40px;
 	height: 40px;
-	margin-left: 80px;
+	margin-left: 40%;
 }
 
 /*     MAIN CONTENT     */
@@ -107,5 +114,7 @@ body {
 }
 
 .visualizer {
-	background-color: : black;
+	border: 2px solid black;
+	height: 100%;
+	width: 100%;
 }

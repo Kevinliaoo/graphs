@@ -133,3 +133,36 @@ class Tree {
 		position === 0 ? parent.setLeftChild(node) : parent.setRightChild(node);
 	}
 }
+
+class CanvasNode {
+
+	constructor(posX, posY, nodePointer) {
+		this.posX = posX; 
+		this.posY = posY; 
+		this.gap = 15;
+		this.letterX = posX + this.gap; 
+		this.letterY = posY - this.gap; 
+		this.node = nodePointer; 
+	}
+
+	draw() {
+		// Draw point 
+		context.beginPath();
+		context.arc(this.posX, this.posY, 8, Math.PI*2, false);
+		context.fill();
+		// Node name 
+		this.setLetterPos();
+		context.font = "bold 12px Georgia";
+		context.fillText(this.node.letter, this.letterX, this.letterY);
+	}
+
+	setLetterPos() {
+		let textWidth = context.measureText(this.node.letter).width; 
+		let textHeight = context.measureText(this.node.letter).height; 
+
+		if (this.posX < 20) this.letterX = this.posX + this.gap; 
+		if (this.posY < 20) this.letterY = this.posY + this.gap;
+		if (this.posY > canvas.height - 20) this.letterY = this.posY - this.gap;
+		if (this.posX + textWidth > canvas.width - 20) this.letterX = this.posX - 2*this.gap - textWidth;
+	}
+}

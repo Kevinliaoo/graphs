@@ -533,3 +533,12 @@ function maxFlow(graph, start, end) {
 
 	return max;
 }
+
+/*
+ * Generates a random number in a specified range 
+ * 
+ * @param 	{Number} 	min 	Minium value of the range (inclusive)
+ * @param 	{Number}	max 	Maxium value of the range (inclusive)
+ * @return 	{Number}		Random Integer value
+*/
+let randomNumber = (min, max) => Math.floor((max+1-min) * Math.random());
