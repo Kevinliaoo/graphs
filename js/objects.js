@@ -7,7 +7,7 @@ class Node {
 	}
 }
 
-class TreeNode extends Node{
+class TreeNode extends Node {
 	constructor(letter) {
 		super(letter);
 		this.leftChild = null; 
@@ -134,9 +134,35 @@ class Tree {
 	}
 }
 
+class CanvasConnection {
+
+	/*
+	 * @param 	{CanvasNode} 	node_1		Node 1 
+	 * @param 	{CanvasNode}	node_2 		Node 2
+	*/
+	constructor(node_1, node_2) {
+		this.node_1 = node_1; 
+		this.node_2 = node_2; 
+	}
+
+	draw() {
+		context.lineWidth = 2;
+		context.beginPath(); 
+		context.moveTo(this.node_1.posX, this.node_1.posY); 
+		context.lineTo(this.node_2.posX, this.node_2.posY); 
+		context.stroke();
+	}
+}
+
 class CanvasNode {
 
+	/*
+	 * @param 	{Number}	posX 	X axis position on Canvas
+	 * @param 	{Number}	posY 	Y axis position on Canvas
+	 * @param 	{Node}		nodePointer	Node that current CanvasNode points
+	*/
 	constructor(posX, posY, nodePointer) {
+		this.radius = 8;
 		this.posX = posX; 
 		this.posY = posY; 
 		this.gap = 15;
@@ -145,10 +171,13 @@ class CanvasNode {
 		this.node = nodePointer; 
 	}
 
+	/*
+	 * Draws the Node on the Canvas
+	*/
 	draw() {
 		// Draw point 
 		context.beginPath();
-		context.arc(this.posX, this.posY, 8, Math.PI*2, false);
+		context.arc(this.posX, this.posY, this.radius, Math.PI*2, false);
 		context.fill();
 		// Node name 
 		this.setLetterPos();
@@ -156,10 +185,14 @@ class CanvasNode {
 		context.fillText(this.node.letter, this.letterX, this.letterY);
 	}
 
+	/*
+ 	 * Adjusts the name text position on Canvas
+	*/
 	setLetterPos() {
 		let textWidth = context.measureText(this.node.letter).width; 
 		let textHeight = context.measureText(this.node.letter).height; 
-
+		this.letterX = this.posX + this.gap; 
+		this.letterY = this.posY - this.gap; 
 		if (this.posX < 20) this.letterX = this.posX + this.gap; 
 		if (this.posY < 20) this.letterY = this.posY + this.gap;
 		if (this.posY > canvas.height - 20) this.letterY = this.posY - this.gap;

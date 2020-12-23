@@ -25,11 +25,11 @@
 			<button class="nav-menu__addnodebtn" id="addNode">Add</button>
 
 			<p class="nav-menu__connection">Connections</p>
-			<input class="nav-menu__nodeweight" type="number" name="weight" placeholder="Node weight">
-			<input class="nav-menu__connections--edges" type="text" name="from" placeholder="From: ">
+			<input class="nav-menu__nodeweight" id="connectionWeight" type="number" name="weight" placeholder="Node weight" min=0>
+			<input class="nav-menu__connections--edges" id="edge_1" type="text" name="from" placeholder="From: ">
 			<img class="nav-menu__arrow-img" src="./assets/arrow.png" alt="arrow">
-			<input class="nav-menu__connections--edges" type="text" name="to" placeholder="To: ">
-			<button class="nav-menu__connectbtn">Connect</button>
+			<input class="nav-menu__connections--edges" id="edge_2" type="text" name="to" placeholder="To: ">
+			<button class="nav-menu__connectbtn" id="createConnection">Connect</button>
 		</section>
 		<section class="content">
 			<canvas class="visualizer"></canvas>
