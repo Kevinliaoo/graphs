@@ -7,6 +7,8 @@ let inputFrom = document.getElementById('edge_1');
 let inputTo = document.getElementById('edge_2');
 let inputWeight = document.getElementById('connectionWeight');
 let connectionBtn = document.getElementById('createConnection');
+let primBtn = document.getElementById('prim'); 
+let dijkstraBtn = document.getElementById('dijkstra');
 
 // MAIN STRUCTURE
 let structure;
@@ -25,6 +27,8 @@ fix_dpi()
 // REDRAWING FRAME
 let circles_arrays = []; 
 let connection_arrays = [];
+// Algorithm Path
+let path;
 
 var x = 20;
 function animate() {
@@ -100,6 +104,38 @@ function circleClicked(x, y) {
 	}
 }
 
+/*
+ * Deletes a CanvasNode and all it's related CanvasConnections from circles_arrays and connection_arrays
+ * 
+ * @param 	{CanvasNode}	cNode 	Node to be deleted 
+*/
+function deleteNodeFromCanvas(cNode) {
+	const nIndex = circles_arrays.indexOf(cNode); 
+	
+	if (nIndex === -1) return; 
+	circles_arrays.splice(nIndex, 1)
+
+	let allConnections = connection_arrays.filter(x => (x.node_1 === cNode || x.node_2 === cNode))
+	for (let i of allConnections) {
+		const ind = connection_arrays.indexOf(i); 
+		if (ind === -1) continue; 
+		connection_arrays.splice(ind, 1);
+	}
+}
+
+/*
+ * Check if input fields are filled and returns the values
+*/
+function checkNodeField(inputfield, message) {
+	const node = searchNodeByName(inputfield.value.trim()); 
+	if (node === -1) {
+		alert(message);
+		inputfield.value = ""; 
+		return false
+	}
+	return node
+}
+
 // BUTTON EVENT LISTENERS
 
 /*
@@ -135,14 +171,14 @@ addNodeBtn.addEventListener("click", (ev) => {
 })
 
 let toggleIndex = 0; 
-const display_algos = ["Graph", "Dir. Graph", "Tree"];
+const display_algos = ["Graph", "Dir. Graph"];
 /*
  * Updates button's text when is toggled 
 */
 algorithmBtn.addEventListener("click", () => {
 	// Eliminar la estructura de dato si ya existe 
 	toggleIndex ++; 
-	if (toggleIndex === 3) toggleIndex = 0; 
+	if (toggleIndex === display_algos.length) toggleIndex = 0; 
 	algorithmBtn.textContent = display_algos[toggleIndex];
 })
 
@@ -177,6 +213,22 @@ canvas.addEventListener('mousemove', ev => {
 		canvasDrag.selectedObj.setLetterPos();
 	}
 })
+// Delete node when user double clicks
+canvas.addEventListener('dblclick', ev => {
+	const x = ev.layerX; 
+	const y = ev.layerY; 
+	const cir = circleClicked(x, y);
+	let response = window.confirm("Do you want to delete this Node?"); 
+	if (response && cir != undefined) {
+		// Graphs
+		if (structure_name === display_algos[0]) {
+			// Delete the Node and all Connections
+			structure.deleteNode(cir.node); 
+			// From Canvas
+			deleteNodeFromCanvas(cir);
+		}
+	}
+})
 
 /*
  * Add Connections 
@@ -186,21 +238,13 @@ connectionBtn.addEventListener('click', ev => {
 	const weight = inputWeight.value.trim();
 	if (weight === '') {
 		alert("Please insert a weight for the Connection");
+		inputWeight.value = "";
 		return;
 	}
-	const node_1 = searchNodeByName(inputFrom.value.trim())
-	if (node_1 === -1) {
-		alert("Please insert a valid Node in Node 1"); 
-		inputFrom.value = ""; 
-		return; 
-	}
-	const node_2 = searchNodeByName(inputTo.value.trim());
-	if (node_2 === -1) {
-		alert("Please insert a valid Node in Node 2");
-		inputTo.value = "";  
-		return; 
-	}
-
+	const node_1 = checkNodeField(inputFrom, 'Please insert a valid Node in Node 1')
+	if (node_1 === false) return;
+	const node_2 = checkNodeField(inputTo, 'Please insert a valid Node in Node 2')
+	if (node_2 === false) return;
 	// Connect nodes of the Graph
 	if (structure_name === display_algos[0]) {
 		structure.connectNodes(node_1.node, node_2.node, weight);
@@ -228,9 +272,25 @@ connectionBtn.addEventListener('click', ev => {
 	}
 
 	// Add new Connection to connection_arrays 
-	connection_arrays.push(new CanvasConnection(node_1, node_2));
+	connection_arrays.push(new CanvasConnection(node_1, node_2, weight));
 	// Rest input values 
 	inputFrom.value = ""; 
 	inputTo.value = ""; 
 	inputWeight.value = "";
+})
+
+primBtn.addEventListener('click', () => {
+	if (structure === undefined) return;
+	path = prim(structure); 
+})
+
+dijkstraBtn.addEventListener('click', () => {
+	if (structure === undefined) return;
+	try {
+		var {weight, node_1, node_2} = checkFields(); 
+	}
+	catch {
+		return;
+	}
+	console.log(node_1, node_2)
 })

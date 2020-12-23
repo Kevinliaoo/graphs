@@ -100,20 +100,29 @@ class Graph {
 		return this.nodesDegree;
 	}
 
-	/**
-	 * Checks if all Nodes in the Graph has at least one connection to connect with other nodes
+	/*
+	 * Deletes a Node and all Connections related to it
 	 * 
-	 * @return	{boolean}	
+	 * @param 	{Node}		node 	Node to be deleted 
 	*/
-	checkAllConnected() {
+	deleteNode(node) {
+		// Filtering 
+		if (node === this.rootNode) {
+			alert("You can not delete the Root Node!"); 
+			return; 
+		}
+		const nodeIndex = this.nodes.indexOf(node);
+		if (nodeIndex === -1) return;
 
-	}
-	
-	/**
-	 * Check if the Graph has a Binary Tree structure
-	*/
-	isBinTree() {
-
+		// Delete Node
+		this.nodes.splice(nodeIndex, 1);
+		let nodeConnections = getAllConnections(this, node); 
+ 		// Delete connections
+		for (let c of nodeConnections) {
+			const cIndex = this.connections.indexOf(c); 
+			if (cIndex === -1) continue; 
+			this.connections.splice(cIndex, 1);
+		}
 	}
 }
 
@@ -140,9 +149,10 @@ class CanvasConnection {
 	 * @param 	{CanvasNode} 	node_1		Node 1 
 	 * @param 	{CanvasNode}	node_2 		Node 2
 	*/
-	constructor(node_1, node_2) {
+	constructor(node_1, node_2, weight) {
 		this.node_1 = node_1; 
-		this.node_2 = node_2; 
+		this.node_2 = node_2;
+		this.weight = weight; 
 	}
 
 	draw() {
@@ -151,6 +161,14 @@ class CanvasConnection {
 		context.moveTo(this.node_1.posX, this.node_1.posY); 
 		context.lineTo(this.node_2.posX, this.node_2.posY); 
 		context.stroke();
+
+		context.font = "bold 14px Georgia";
+		const minX = this.node_1.posX < this.node_2.posX ? this.node_1.posX : this.node_2.posX
+		const minY = this.node_1.posY < this.node_2.posY ? this.node_1.posY : this.node_2.posY
+		const middleX = Math.abs(this.node_1.posX - this.node_2.posX)/2; 
+		const middleY = Math.abs(this.node_1.posY - this.node_2.posY)/2; 
+		context.fillText(this.weight, minX+middleX, minY+middleY);
+
 	}
 }
 

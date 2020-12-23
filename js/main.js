@@ -88,8 +88,6 @@ eulerGraph.connectNodes(f, d, 10)
 eulerGraph.connectNodes(b, c, 10);
 eulerGraph.connectNodes(c, d, 10);
 
-console.log(findClosedPath(eulerGraph, a))
-
 let maxFlowGraph = new Graph(a); 
 maxFlowGraph.addNode(b);
 maxFlowGraph.addNode(c);

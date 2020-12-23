@@ -22,21 +22,20 @@ body {
 
 .menu-item {
 	background-color: rgb(57, 255, 20);
-	padding: 5px;
+	padding: 6px;
 	margin-top: 5px;
-	border: 2px solid black;
 	border-radius: 25px;
 	margin-left: 20px;
 	margin-right: 20px;
-    list-style: none; 
     flex: 1; 
     text-align: center;
-    transition: flex .5s; 
-	cursor: pointer;
+	font-size: 16px;
+	font-weight: bold;
+	outline: none;
 }
 
 .menu-item:hover {
-    background-color: rgba(57, 255, 20, 0.7) 
+    background-color: rgba(57, 255, 20, 0.7); 
 }
 
 .container {
