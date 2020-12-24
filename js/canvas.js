@@ -9,6 +9,8 @@ let inputWeight = document.getElementById('connectionWeight');
 let connectionBtn = document.getElementById('createConnection');
 let primBtn = document.getElementById('prim'); 
 let dijkstraBtn = document.getElementById('dijkstra');
+let fleuryBtn = document.getElementById('fleury'); 
+let maxflowBtn = document.getElementById('maxflow');
 
 // MAIN STRUCTURE
 let structure;
@@ -43,8 +45,35 @@ function animate() {
 	for (let line of connection_arrays) {
 		line.draw();
 	}
+
+	if (path != undefined) {
+		drawPath();
+	}
 }
 animate();
+
+/*
+ * Draws the Connection in path array with red
+ * 
+ * FALTA BUG: 
+ *     - Resolver el problema de dibujar
+*/
+function drawPath() {
+	for (let c of path) {
+		context.strokeStyle = "#FF0000";
+		c.draw();
+	}
+	context.strokeStyle = "#000000"
+}
+
+/*
+ * Converts all the Connections in the path array to a CanvasConnection object 
+*/
+function convertConnectionToCanvasConnection() {
+	path = path.map(connection => {
+		return new CanvasConnection(connection.node_1, connection.node_2, connection.weight);
+	});
+}
 
 /*
  * Builds the data structure with the root Node
@@ -128,9 +157,9 @@ function deleteNodeFromCanvas(cNode) {
 */
 function checkNodeField(inputfield, message) {
 	const node = searchNodeByName(inputfield.value.trim()); 
+	inputfield.value = ""; 
 	if (node === -1) {
 		alert(message);
-		inputfield.value = ""; 
 		return false
 	}
 	return node
@@ -279,18 +308,43 @@ connectionBtn.addEventListener('click', ev => {
 	inputWeight.value = "";
 })
 
+// Run PRIM algorithm
 primBtn.addEventListener('click', () => {
 	if (structure === undefined) return;
 	path = prim(structure); 
+	convertConnectionToCanvasConnection();
 })
 
+// Run DIJKSTRA algorithm
 dijkstraBtn.addEventListener('click', () => {
 	if (structure === undefined) return;
-	try {
-		var {weight, node_1, node_2} = checkFields(); 
-	}
-	catch {
-		return;
-	}
-	console.log(node_1, node_2)
+	const node_1 = checkNodeField(inputFrom, 'Please insert a valid Node in Node 1')
+	if (node_1 === false) return;
+	const node_2 = checkNodeField(inputTo, 'Please insert a valid Node in Node 2')
+	if (node_2 === false) return;
+	if (node_1 === node_2) return;
+
+	path = dijkstra(structure, node_1.node, node_2.node); 
+	console.log(path); 
+	convertConnectionToCanvasConnection(); 
+	console.log(path)
+})
+
+// Run FLEURY algorithm
+fleuryBtn.addEventListener('click', () => {
+	const res = fleury(structure);
+	if (res != undefined) path = res; 
+	else alert("Unable to find an euler cycle");
+})
+
+// Run MAXFLOW algorithm 
+maxflowBtn.addEventListener('click', () => {
+	if (structure === undefined) return;
+	const node_1 = checkNodeField(inputFrom, 'Please insert a valid Node in Node 1')
+	if (node_1 === false) return;
+	const node_2 = checkNodeField(inputTo, 'Please insert a valid Node in Node 2')
+	if (node_2 === false) return;
+	if (node_1 === node_2) return;
+
+	path = maxFlow(structure, node_1.node, node_2.node);
 })

@@ -49,7 +49,7 @@ body {
 	width: 15%;
 	display: flex; 
 	flex-flow: column; 
-	border: 2px solid black;
+	/*border: 2px solid black;*/
 	margin-top: 10px;
 }
 
@@ -113,7 +113,7 @@ body {
 }
 
 .visualizer {
-	border: 2px solid black;
+	/*border: 2px solid black;*/
 	height: 100%;
 	width: 100%;
 }
