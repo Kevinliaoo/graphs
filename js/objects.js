@@ -104,15 +104,16 @@ class Graph {
 	 * Deletes a Node and all Connections related to it
 	 * 
 	 * @param 	{Node}		node 	Node to be deleted 
+	 * @return 	{Boolean}	If elements were correctly deleted
 	*/
 	deleteNode(node) {
 		// Filtering 
 		if (node === this.rootNode) {
 			alert("You can not delete the Root Node!"); 
-			return; 
+			return false; 
 		}
 		const nodeIndex = this.nodes.indexOf(node);
-		if (nodeIndex === -1) return;
+		if (nodeIndex === -1) return false;
 
 		// Delete Node
 		this.nodes.splice(nodeIndex, 1);
@@ -123,6 +124,7 @@ class Graph {
 			if (cIndex === -1) continue; 
 			this.connections.splice(cIndex, 1);
 		}
+		return true;
 	}
 }
 
@@ -152,11 +154,14 @@ class CanvasConnection {
 	constructor(node_1, node_2, weight) {
 		this.node_1 = node_1; 
 		this.node_2 = node_2;
-		this.weight = weight; 
+		this.weight = weight;
+		this.color = "#000000"; 
+		this.lineWidth = 2; 
 	}
 
 	draw() {
-		context.lineWidth = 2;
+		context.strokeStyle = this.color;
+		context.lineWidth = this.lineWidth;
 		context.beginPath(); 
 		context.moveTo(this.node_1.posX, this.node_1.posY); 
 		context.lineTo(this.node_2.posX, this.node_2.posY); 

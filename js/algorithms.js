@@ -527,7 +527,8 @@ function maxFlow(graph, start, end) {
 		const originalC = graph.connections[i]
 		if (originalC.weight === connectionWeight[i]) continue;
 		
-		const c = new Connection(originalC.node_1, originalC.node_2, originalC.weight-connectionWeight[i]);
+		//const c = new Connection(originalC.node_1, originalC.node_2, originalC.weight-connectionWeight[i]);
+		const c = new Connection(originalC.node_1, originalC.node_2, originalC.weight);
 		max.push(c);
 	}
 

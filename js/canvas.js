@@ -30,7 +30,7 @@ fix_dpi()
 let circles_arrays = []; 
 let connection_arrays = [];
 // Algorithm Path
-let path;
+let path = [];
 
 var x = 20;
 function animate() {
@@ -39,40 +39,31 @@ function animate() {
 	// Repaint background
 	context.clearRect(0, 0, innerWidth, innerHeight);
 	
-	for (let circle of circles_arrays) {
-		circle.draw();
-	}
-	for (let line of connection_arrays) {
-		line.draw();
-	}
-
-	if (path != undefined) {
-		drawPath();
-	}
+	circles_arrays.map(ca => ca.draw())
+	connection_arrays.map(coa => coa.draw())
+	path.map(p => p.draw())
 }
 animate();
 
 /*
- * Draws the Connection in path array with red
- * 
- * FALTA BUG: 
- *     - Resolver el problema de dibujar
-*/
-function drawPath() {
-	for (let c of path) {
-		context.strokeStyle = "#FF0000";
-		c.draw();
-	}
-	context.strokeStyle = "#000000"
-}
-
-/*
- * Converts all the Connections in the path array to a CanvasConnection object 
+ * Converts all the Connections in the path array to a CanvasConnection object and changes properties
 */
 function convertConnectionToCanvasConnection() {
-	path = path.map(connection => {
-		return new CanvasConnection(connection.node_1, connection.node_2, connection.weight);
-	});
+	connection_arrays.map(j => {
+		j.color = "#000000"; 
+		j.lineWidth = 2;
+	})
+	path = path.map (c => {
+		let selected; 
+		for (let i of connection_arrays) {
+			if (c.node_1 === i.node_1.node && c.node_2 === i.node_2.node && c.weight === i.weight) {
+				i.color = "#FF0000"; 
+				i.lineWidth = 4; 
+				selected = i; 
+			}
+		}
+		return selected;
+	})
 }
 
 /*
@@ -247,14 +238,15 @@ canvas.addEventListener('dblclick', ev => {
 	const x = ev.layerX; 
 	const y = ev.layerY; 
 	const cir = circleClicked(x, y);
+	if (cir === undefined) return;
 	let response = window.confirm("Do you want to delete this Node?"); 
 	if (response && cir != undefined) {
 		// Graphs
 		if (structure_name === display_algos[0]) {
 			// Delete the Node and all Connections
-			structure.deleteNode(cir.node); 
+			const deleted = structure.deleteNode(cir.node); 
 			// From Canvas
-			deleteNodeFromCanvas(cir);
+			if (deleted) deleteNodeFromCanvas(cir);
 		}
 	}
 })
@@ -325,15 +317,16 @@ dijkstraBtn.addEventListener('click', () => {
 	if (node_1 === node_2) return;
 
 	path = dijkstra(structure, node_1.node, node_2.node); 
-	console.log(path); 
 	convertConnectionToCanvasConnection(); 
-	console.log(path)
 })
 
 // Run FLEURY algorithm
 fleuryBtn.addEventListener('click', () => {
 	const res = fleury(structure);
-	if (res != undefined) path = res; 
+	if (res != undefined) {
+		path = res;
+		convertConnectionToCanvasConnection()
+	}
 	else alert("Unable to find an euler cycle");
 })
 
@@ -347,4 +340,5 @@ maxflowBtn.addEventListener('click', () => {
 	if (node_1 === node_2) return;
 
 	path = maxFlow(structure, node_1.node, node_2.node);
+	convertConnectionToCanvasConnection()
 })
