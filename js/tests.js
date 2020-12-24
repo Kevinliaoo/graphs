@@ -12,24 +12,11 @@ let graph = new Graph(a);
 
 graph.addNode(b); 
 graph.addNode(c); 
-graph.addNode(d); 
-graph.addNode(e);
-graph.addNode(f);
-graph.addNode(g);
-graph.addNode(h);
 
-graph.connectNodes(a, b, 4); 
-graph.connectNodes(b, c, 7); 
-graph.connectNodes(c, d, 2); 
-graph.connectNodes(d, e, 5); 
-graph.connectNodes(e, f, 6); 
-graph.connectNodes(f, g, 5); 
-graph.connectNodes(g, a, 6);
-graph.connectNodes(a, h, 4); 
-graph.connectNodes(g, h, 8);
-graph.connectNodes(h, e, 7); 
-graph.connectNodes(h, d, 2); 
-graph.connectNodes(h, c, 3); 
+graph.connectNodes(a, b, 12); 
+graph.connectNodes(a, c, 3); 
+graph.connectNodes(c, b, 2); 
+
 
 let dijkstraG = new Graph(a); 
 dijkstraG.addNode(b);

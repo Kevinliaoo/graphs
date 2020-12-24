@@ -249,7 +249,7 @@ function kruskal(graph) {
 */
 function dijkstra(graph, start, end) {
 	// Check if start and end point is inside graph
-	if (!graph.nodes.includes(start) || !graph.nodes.includes(end)) return;
+	if (!graph.nodes.includes(start) && !graph.nodes.includes(end)) return;
 
 	// Assign 1e6 value for all unvisited nodes
 	let nodeDistances = graph.nodes.map(n => n != start ? 1e6 : 0);

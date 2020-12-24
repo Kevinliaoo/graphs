@@ -32,7 +32,7 @@ class Connection {
 	constructor(node_1, node_2, weight) {
 		this.node_1 = node_1; 
 		this.node_2 = node_2; 
-		this.weight = weight; 
+		this.weight = parseInt(weight); 
 	}
 }
 
@@ -154,7 +154,7 @@ class CanvasConnection {
 	constructor(node_1, node_2, weight) {
 		this.node_1 = node_1; 
 		this.node_2 = node_2;
-		this.weight = weight;
+		this.weight = parseInt(weight);
 		this.color = "#000000"; 
 		this.lineWidth = 2; 
 	}

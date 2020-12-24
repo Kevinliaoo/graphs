@@ -27,8 +27,8 @@ body {
 	border-radius: 25px;
 	margin-left: 20px;
 	margin-right: 20px;
-    flex: 1; 
-    text-align: center;
+	flex: 1; 
+	text-align: center;
 	font-size: 16px;
 	font-weight: bold;
 	outline: none;
@@ -36,6 +36,14 @@ body {
 
 .menu-item:hover {
     background-color: rgba(57, 255, 20, 0.7); 
+}
+
+.reset {
+	background-color: rgb(255, 18, 18);
+}
+
+.reset:hover {
+	background-color: rgba(255, 18, 18, 0.7);
 }
 
 .container {

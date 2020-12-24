@@ -11,6 +11,7 @@ let primBtn = document.getElementById('prim');
 let dijkstraBtn = document.getElementById('dijkstra');
 let fleuryBtn = document.getElementById('fleury'); 
 let maxflowBtn = document.getElementById('maxflow');
+let resetBtn = document.getElementById('reset');
 
 // MAIN STRUCTURE
 let structure;
@@ -340,5 +341,10 @@ maxflowBtn.addEventListener('click', () => {
 	if (node_1 === node_2) return;
 
 	path = maxFlow(structure, node_1.node, node_2.node);
-	convertConnectionToCanvasConnection()
+	convertConnectionToCanvasConnection();
+})
+
+reset.addEventListener('click', () => {
+	path = []; 
+	convertConnectionToCanvasConnection();
 })
