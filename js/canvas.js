@@ -13,6 +13,10 @@ let fleuryBtn = document.getElementById('fleury');
 let maxflowBtn = document.getElementById('maxflow');
 let resetBtn = document.getElementById('reset');
 
+// Background 
+let background = new Image(); 
+background.src = 'https://image.freepik.com/vector-gratis/dibujo-tema-vintage-mapa-mundial_52683-26577.jpg';
+
 // MAIN STRUCTURE
 let structure;
 let structure_name; 
@@ -37,8 +41,10 @@ var x = 20;
 function animate() {
 	// Infinite loop
 	requestAnimationFrame(animate);
-	// Repaint background
-	context.clearRect(0, 0, innerWidth, innerHeight);
+	// White background
+	//context.clearRect(0, 0, innerWidth, innerHeight);
+	// Map background
+	context.drawImage(background, 0, 0, innerWidth, innerHeight);
 	
 	circles_arrays.map(ca => ca.draw())
 	connection_arrays.map(coa => coa.draw())
