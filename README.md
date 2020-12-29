@@ -32,3 +32,14 @@ A flow network is like a network of pipelines, where water goes throught pipelin
 Finding the maxium flow network can solve lot of optimization problems, for example: An oil company wants to send extracted oil to a destination in other city through pipelines and the company has a huge network of pipelines, the maxium flow network will optimize the use of the pipelines to send the biggest ammount of oil possible to the destination, using the maxium capability of each pipelines. <br>
 
 <img src="https://github.com/Kevinliaoo/graphs/blob/master/assets/Captura7.PNG">
+
+## What I learned by doing this project
+
+ * Datastructures and algorithms 
+ * HTML Canvas 
+ * Basics CSS
+ * Applying graphs to solve real life problems
+
+## Author 
+
+Kevin Liao - @kevinliaoo
